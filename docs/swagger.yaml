@@ -1,0 +1,1212 @@
+openapi: 3.0.0
+
+info:
+  title: Poly career
+  version: 0.0.0-ALPHA
+
+servers:
+  - url: "https://api.poly-career.me/api"
+    description: server
+  - url: http://localhost:4300/api
+    description: localhost
+
+security:
+  - JWT: []
+
+tags:
+  - auth
+  - jobs
+  - province
+  - student
+  - employer
+  - category
+  - company activity
+  - upload
+  - company
+
+paths:
+  /v1/auth/login:
+    post:
+      tags:
+        - auth
+      summary: login to student account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          $ref: "#/components/Response/LoginResponse"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+
+  /v1/auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+
+  /v1/auth/admin/login:
+    post:
+      tags:
+        - auth
+      summary: Login to admin account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          $ref: "#/components/Response/LoginResponse"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+
+  /v1/auth/admin/register:
+    post:
+      tags:
+        - auth
+      summary: Register employer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Employer"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+
+  /v1/student/profile:
+    get:
+      tags:
+        - student
+      summary: get student info
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "401":
+          $ref: "#/components/Response/ResponseUnauthorized"
+    put:
+      tags:
+        - student
+      summary: update student profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentUpdate"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+
+  /v1/student/change-password:
+    put:
+      tags:
+        - student
+      summary: update password student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePassword"
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+  /v1/admin/change-password:
+    put:
+      tags:
+        - employer
+      summary: update password employer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePassword"
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+  /v1/student/apply:
+    post:
+      tags:
+        - student
+      summary: ứng tuyển với cv đã có
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApplyJobOld"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/student/apply/new:
+    post:
+      tags:
+        - student
+      summary: ứng tuyển với cv mới
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApplyJobNew"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/student/mycv:
+    get:
+      tags:
+        - student
+      summary: lấy các cv đã nộp trước đây
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+  /v1/student/profile/detail:
+    put:
+      tags:
+        - student
+      summary: update student detail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentDetail"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/student/profile/education:
+    post:
+      tags:
+        - student
+      summary: create student education
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentEducation"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/student/profile/education/{id}:
+    put:
+      tags:
+        - student
+      summary: update student education
+      parameters:
+        - name: id
+          in: path
+          description: ID of student education
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentEducation"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+    delete:
+      tags:
+        - student
+      summary: delete student education
+      parameters:
+        - name: id
+          in: path
+          description: ID of student education
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/student/profile/change_email:
+    put:
+      tags:
+        - student
+      summary: update student email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentUpdateMail"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/admin/profile:
+    get:
+      tags:
+        - employer
+      summary: get employer info
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "401":
+          $ref: "#/components/Response/ResponseUnauthorized"
+    put:
+      tags:
+        - employer
+      summary: update employer profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployerUpdate"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/company:
+    post:
+      tags:
+        - employer
+      summary: Create company with employer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Company"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+    put:
+      tags:
+        - employer
+      summary: Update company with employer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Company"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/companies:
+    get:
+      tags:
+        - company
+      summary: get company
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Company"
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+  # /v1/companies/{id}:
+  #   post:
+  #     tags:
+  #       - company
+  #     summary: get company by id
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/Company"
+  #     responses:
+  #       "200":
+  #         $ref: "#/components/Response/GetSuccess"
+  #       "400":
+  #         $ref: "#/components/Response/Response400"
+
+  /v1/province:
+    get:
+      tags:
+        - province
+      summary: get province
+      responses:
+        "200":
+          description: Success with province
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/Response/province"
+  /v1/jobs:
+    get:
+      tags:
+        - jobs
+      summary: get list job info
+      parameters:
+        - name: company_id
+          in: query
+          description: truyền mã côn ty nếu có
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: category_id
+          in: query
+          description: truyền limit nếu không, mặc định là 10
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: truyền page nếu không, mặc định là 1
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: limit
+          in: query
+          description: truyền limit nếu không, mặc định là 10
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: search
+          in: query
+          description: truyền vào tiêu đề bài viết, tên công ty, thể loại công việc
+          required: false
+          explode: true
+          schema:
+            type: string
+
+        - name: experience
+          in: query
+          description: truyền vào kinh nghiệm
+          required: false
+          explode: true
+          schema:
+            type: string
+
+        - name: max
+          in: query
+          description: truyền vào max mức lương
+          required: false
+          explode: true
+          schema:
+            type: number
+
+        - name: min
+          in: query
+          description: truyền vào min mức lương
+          required: false
+          explode: true
+          schema:
+            type: number
+
+        - name: level
+          in: query
+          description: truyền vào cap do
+          required: false
+          explode: true
+          schema:
+            type: string
+
+        - name: position
+          in: query
+          description: truyền vào vị trí
+          required: false
+          explode: true
+          schema:
+            type: string
+
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+  /v1/job/fit:
+    get:
+      tags:
+        - jobs
+      summary: lấy danh sách bài viết gợi ý
+      parameters:
+        - name: job_id
+          in: query
+          description: truyền mã job nếu đang ở trong chi tiết bài viết tuyển dụng
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: student_id
+          in: query
+          description: truyền mã sinh viên, **Lưu ý:** trường hợp vừa truyền job_id và student_id, hệ thống sẽ ưu tiên các kết quả của student_id
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: limit
+          in: query
+          description: truyền limit nếu không, mặc định là 10
+          required: false
+          explode: true
+          schema:
+            type: number
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+  /v1/job:
+    post:
+      tags:
+        - employer
+      summary: create job
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Job"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+
+  /v1/job/{id}:
+    get:
+      tags:
+        - jobs
+      summary: get job info
+      parameters:
+        - name: id
+          in: path
+          description: ID of jobs
+          required: true
+          schema:
+            type: integer
+            format: int
+            parameters:
+        - name: student_id
+          in: query
+          description: truyền mã student nếu có
+          required: false
+          explode: true
+          schema:
+            type: number
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+    put:
+      tags:
+        - employer
+      summary: update job info
+      parameters:
+        - name: id
+          in: path
+          description: ID of jobs
+          required: true
+          schema:
+            type: integer
+            format: int
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Job"
+      responses:
+        "200":
+          $ref: "#/components/Response/CreateSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+        "422":
+          $ref: "#/components/Response/Response422"
+  /v1/categories:
+    get:
+      tags:
+        - category
+      summary: get all category
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+  /v1/company_activities:
+    get:
+      tags:
+        - company activity
+      summary: get all company activities
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+  /v1/upload:
+    post:
+      tags:
+        - upload
+      summary: upload image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/upload"
+      responses:
+        "200":
+          $ref: "#/components/Response/UploadSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+  /v1/upload/file:
+    post:
+      tags:
+        - upload
+      summary: upload file
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/upload"
+      responses:
+        "200":
+          $ref: "#/components/Response/UploadSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+  /v1/employer/apply_job:
+    get:
+      tags:
+        - employer
+      summary: lấy tất cả các cv đã apply
+      parameters:
+        - name: job_id
+          in: query
+          description: Mã bài viết tuyển dụng
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: status
+          in: query
+          description: tìm kiểm theo status cv
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: date_from
+          in: query
+          description: "ngày tải cv từ. **Lưu ý**, phải đúng theo format `yyyy-mm-dd`. **Example**: `2022-11-20`"
+          required: false
+          explode: true
+          schema:
+            type: string
+        - name: date_to
+          in: query
+          description: "ngày tải cv đến. **Lưu ý**, phải đúng theo format `yyyy-mm-dd`. **Example**: `2022-11-20`"
+          required: false
+          explode: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: truyền page nếu không, mặc định là 1
+          required: false
+          explode: true
+          schema:
+            type: number
+        - name: limit
+          in: query
+          description: truyền limit nếu không, mặc định là 10
+          required: false
+          explode: true
+          schema:
+            type: number
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+  /v1/employer/apply_job/{id}:
+    get:
+      tags:
+        - employer
+      summary: thông tin apply job theo id
+      parameters:
+        - name: id
+          in: path
+          description: ID of apply job
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+    put:
+      tags:
+        - employer
+      summary: update status apply job theo id
+      parameters:
+        - name: id
+          in: path
+          description: ID of apply job
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateStatusApplyJob"
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+  /v1/company/{id}:
+    get:
+      tags:
+        - company
+      summary: get company  info
+      parameters:
+        - name: id
+          in: path
+          description: ID of company
+          required: true
+          schema:
+            type: integer
+            format: int
+      responses:
+        "200":
+          $ref: "#/components/Response/GetSuccess"
+        "400":
+          $ref: "#/components/Response/Response400"
+
+components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: bearer jwt
+  ActionResponseNoLogin:
+    type: object
+    properties:
+      message:
+        type: string
+  Response:
+    GetSuccess:
+      description: success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "200"
+              status:
+                type: string
+                example: "Success!"
+              data:
+                type: object
+    CreateSuccess:
+      description: success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "200"
+              data:
+                type: object
+                example: { "id": 1 }
+    UploadSuccess:
+      description: success
+      content:
+        application/octet-stream:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "200"
+              data:
+                type: string
+                example: https://res.cloudinary.com/love-story/image/upload/v1668238920/yaxmbtszlenjbmqbca5g.png
+
+    Response400:
+      description: have some error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "400000"
+              message:
+                type: string
+                example: Bad request!
+              error:
+                type: string
+                example: "false"
+    ResponseUnauthorized:
+      description: Not login
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "401001"
+              message:
+                type: string
+                example: Unauthorized!
+              error:
+                type: string
+                example: "false"
+    Response422:
+      description: "UnprocessableEntity: Error field"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "422000"
+              message:
+                type: string
+                example: Unprocessable entity!
+              error:
+                type: string
+                example: "false"
+              error_field:
+                type: array
+                example:
+                  [
+                    {
+                      "field": "name",
+                      "message": ["vui lòng điền đầy đủ thông tin"],
+                    },
+                  ]
+
+    ResponseInternalServer:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "500000"
+              message:
+                type: string
+                example: Server error!
+              error:
+                type: string
+                example: "false"
+
+    province:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "200"
+        message:
+          type: string
+          example: ok
+        data:
+          $ref: "#/components/schemas/province"
+    LoginResponse:
+      description: Response login
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                example: "200"
+              message:
+                type: string
+                example: ok
+              data:
+                type: object
+                example: { "token": "abcd.xyzd.qwet" }
+    StudentProfileResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "200"
+        message:
+          type: string
+          example: ok
+        data:
+          $ref: "#/components/schemas/Student"
+
+    EmployerProfileResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: "200"
+        message:
+          type: string
+          example: ok
+        data:
+          $ref: "#/components/schemas/Employer"
+
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@gmail.com
+        password:
+          type: string
+          example: password123
+    Student:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: Nguyen Van A
+        email:
+          type: string
+          example: test@gmail.com
+        password:
+          type: string
+          example: password123
+        avatar:
+          type: string
+          example: "http://pictture/"
+        phone:
+          type: string
+          example: 01232141265
+        birthday:
+          type: Date
+          example: "2000-09-11T17:00:00.000Z"
+        location_id:
+          type: number
+          example: 1
+        gender:
+          type: number
+          example: 1
+    StudentUpdate:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: Nguyen Van A
+        avatar:
+          type: string
+          example: "http://pictture/"
+        phone:
+          type: string
+          example: 01232141265
+        birthday:
+          type: Date
+          example: "2000-09-11T17:00:00.000Z"
+        location_id:
+          type: number
+          example: 1
+        gender:
+          type: number
+          example: 1
+        address:
+          type: string
+          example: "Q1"
+
+    Employer:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: Nguyen Van A
+        email:
+          type: string
+          example: test@gmail.com
+        phone:
+          type: string
+          example: 0123567991
+        password:
+          type: string
+          example: password123
+        avatar:
+          type: string
+          example: "http://pictture/"
+        province:
+          type: string
+          example: "Q.Tân bình, ..."
+    EmployerUpdate:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: Nguyen Van A
+        email_noti:
+          type: string
+          example: Nguyen Van A
+        phone:
+          type: string
+          example: 0123567991
+        avatar:
+          type: string
+          example: "http://pictture/"
+        address:
+          type: string
+          example: "Q.Tân bình, ..."
+
+    province:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        code:
+          type: string
+          example: "01"
+        parent:
+          type: string
+          example: "00"
+        name:
+          type: string
+          example: Thành phố Hà Nội
+
+    Job:
+      type: object
+      properties:
+        title:
+          type: string
+          example: tin tuyển dụng
+        category_id:
+          type: number
+          example: 1
+        province_id:
+          type: number
+          example: 1
+        address:
+          type: string
+          example: p1, Tan binh
+        gender:
+          type: string
+          example: nam/nu
+        count:
+          type: number
+          example: 10
+        experience:
+          type: string
+          example: 6 thang
+        job_type:
+          type: string
+          example: Full time
+        position:
+          type: string
+          example: thực tập
+        salary:
+          type: number
+          example: 3000000
+        level:
+          type: string
+          example: cao dang
+        description:
+          type: string
+          example: mô tả công việc
+        require:
+          type: string
+          example: yêu cầu công việc
+        benefit:
+          type: string
+          example: quyền lợi
+
+    Company:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Công ty TNHH 1 mình Tôi ABCXYZ"
+        tax_code:
+          type: string
+          example: Mã số thuế
+        website:
+          type: string
+          example: Mã số thuế
+        size:
+          type: number
+          example: 50
+        company_activity_id:
+          type: number
+          example: 1
+        phone:
+          type: string
+          example: 01231254679
+        address:
+          description: Mã số thuế
+        province_id:
+          type: number
+          example: 1
+        banner:
+          type: string
+          example: http://abc.xyz
+        avatar:
+          type: string
+          example: http://abc.xyz
+        information:
+          type: string
+          example: Giới thiệu cty
+    ChangePassword:
+      type: object
+      properties:
+        current_password:
+          type: string
+          example: "123456"
+        new_password:
+          type: string
+          example: "1234567"
+    upload:
+      type: object
+      properties:
+        file:
+          type: file
+
+    ApplyJobOld:
+      type: object
+      properties:
+        job_id:
+          type: number
+          example: 1
+        cv_id:
+          type: number
+          example: 1
+        letter:
+          type: string
+          example: Thư giới thiệu
+    ApplyJobNew:
+      type: object
+      properties:
+        job_id:
+          type: number
+          example: 1
+        letter:
+          type: string
+          example: Thư giới thiệu
+        file_name:
+          type: string
+          example: tên file
+        file_url:
+          type: string
+          example: đường dẫn file
+    StudentDetail:
+      type: object
+      properties:
+        position_wish:
+          type: string
+          example: IT DevOps
+        level_wish:
+          type: string
+          example: fresher
+        level_current:
+          type: string
+          example: intern
+        experience:
+          type: string
+          example: 6 month
+        salary_wish:
+          type: number
+          example: 15000000
+        category_wish:
+          type: number
+          example: 1
+        job_type_wish:
+          type: string
+          example: "bán thời gian"
+        province_id:
+          type: number
+          example: 1
+
+    StudentEducation:
+      type: object
+      properties:
+        degree:
+          type: string
+          example: Bằng cao đẳng
+        rank:
+          type: string
+          example: xuất xắc
+        information:
+          type: string
+          example: Tốt nghiệp ngày 12/12/2022
+    StudentUpdateMail:
+      type: object
+      properties:
+        new_email:
+          type: string
+          example: newemail@gmail.com
+    UpdateStatusApplyJob:
+      type: object
+      properties:
+        status:
+          type: number
+          example: 1

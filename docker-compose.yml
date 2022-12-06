@@ -1,0 +1,49 @@
+version: "3.4"
+
+services:
+  api:
+    image: polycareerback
+    env_file:
+      - .env.production
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 4300:4300
+
+  db:
+    image: mysql:8.0-oracle
+    environment:
+      command: --default-authentication-plugin=mysql_native_password
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: poly_database
+    volumes:
+      - ./db_volume/mysql_data:/var/lib/mysql
+      - ./db_volume/mysql_config/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+    ports:
+      - "3306:3306"
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger_ui_container
+    ports:
+      - "8300:8080"
+    volumes:
+      - ./docs:/usr/share/nginx/html/doc
+    environment:
+      API_URL: doc/swagger.yaml
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - /home/mainotp-server/redis:/data
+      - /home/mainotp-server/conf/redis.conf:/usr/local/etc/redis/redis.conf
+  web-demo:
+    image: nginx:1.23.2-alpine
+    volumes:
+      - ./templates:/etc/nginx/templates
+    ports:
+      - "80:80"
+    environment:
+      - NGINX_HOST=foobar.com
+      - NGINX_PORT=80
